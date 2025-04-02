@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colorful Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        }
+        .calculator {
+            width: 280px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        input[type="text"] {
+            width: 100%;
+            height: 60px;
+            font-size: 1.8em;
+            text-align: right;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #f8f9fa;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        button {
+            width: 100%;
+            height: 60px;
+            font-size: 1.5em;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .clear { background: #dc3545; color: white; }
+        .equal { background: #28a745; color: white; }
+        .operator { background: #ff9f43; color: white; }
+        .number { background: #007bff; color: white; }
+        .special { background: #6c757d; color: white; }
+        button:active { opacity: 0.7; }
+        .settings {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .settings button {
+            background: #343a40;
+            color: white;
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" id="display" disabled>
+        <div class="buttons">
+            <button onclick="clearDisplay()" class="clear">C</button>
+            <button onclick="backspace()" class="special">⌫</button>
+            <button onclick="appendValue('%')" class="operator">%</button>
+            <button onclick="appendValue('/')" class="operator">/</button>
+            <button onclick="appendValue('7')" class="number">7</button>
+            <button onclick="appendValue('8')" class="number">8</button>
+            <button onclick="appendValue('9')" class="number">9</button>
+            <button onclick="appendValue('*')" class="operator">×</button>
+            <button onclick="appendValue('4')" class="number">4</button>
+            <button onclick="appendValue('5')" class="number">5</button>
+            <button onclick="appendValue('6')" class="number">6</button>
+            <button onclick="appendValue('-')" class="operator">-</button>
+            <button onclick="appendValue('1')" class="number">1</button>
+            <button onclick="appendValue('2')" class="number">2</button>
+            <button onclick="appendValue('3')" class="number">3</button>
+            <button onclick="appendValue('+')" class="operator">+</button>
+            <button onclick="appendValue('0')" class="number">0</button>
+            <button onclick="appendValue('.')" class="special">.</button>
+            <button onclick="calculate()" class="equal" colspan="2">=</button>
+        </div>
+        <div class="settings">
+            <button onclick="toggleTheme()">Toggle Theme</button>
+            <button onclick="clearHistory()">Clear History</button>
+        </div>
+    </div>
+    <script>
+        function appendValue(value) {
+            document.getElementById("display").value += value;
+        }
+        function clearDisplay() {
+            document.getElementById("display").value = "";
+        }
+        function backspace() {
+            let display = document.getElementById("display");
+            display.value = display.value.slice(0, -1);
+        }
+        function calculate() {
+            try {
+                document.getElementById("display").value = eval(document.getElementById("display").value);
+            } catch {
+                document.getElementById("display").value = "Error";
+            }
+        }
+        function toggleTheme() {
+            document.body.classList.toggle("dark-mode");
+        }
+        function clearHistory() {
+            alert("Calculation history cleared!");
+        }
+        document.addEventListener("keydown", function(event) {
+            let key = event.key;
+            if (/[0-9.\/*\-+%]/.test(key)) {
+                appendValue(key);
+            } else if (key === "Enter") {
+                calculate();
+            } else if (key === "Backspace") {
+                backspace();
+            } else if (key === "Escape") {
+                clearDisplay();
+            }
+        });
+    </script>
+</body>
+</html>
